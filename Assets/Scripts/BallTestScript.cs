@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class BallTestScript : MonoBehaviour
 {
+    public PowerBarScript powerBar;
     public Rigidbody rb;
     public float power = 1f;
-    // Start is called before the first frame update
+   
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         if(Input.GetKeyDown("space"))
         {
-            print("powah!");
-            rb.AddForce(power,power,0);
+            print("Use stored power");
+            rb.AddForce(powerBar.finalPower, powerBar.finalPower, 0);
         }
     }
+    
 }
