@@ -57,13 +57,19 @@ public class BallTestScript : MonoBehaviour
         {
 
             Debug.Log(angle);
+            print("Use stored power");
+
+            Vector3 Power = Quaternion.Euler(0, 0, angle) * Vector3.right;
+
+            Power *= powerBar.finalPower;
+
+            rb.AddForce(Power);
+
         }
 
-        if (Input.GetKeyDown("space"))
-        {
-            print("Use stored power");
-            rb.AddForce(powerBar.finalPower, powerBar.finalPower, 0);
-        }
+
+  
+
 
 
     }
