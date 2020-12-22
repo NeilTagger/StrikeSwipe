@@ -5,16 +5,15 @@ using UnityEngine;
 
 public class BallTestScript : MonoBehaviour
 {
-<<<<<<< HEAD
+
     public PowerBarScript powerBar;
-=======
+
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
 
     public float SWIPE_THRESHOLD = 20f;
 
->>>>>>> refs/remotes/origin/Swipes
     public Rigidbody rb;
     public float power = 1f;
    
@@ -95,9 +94,7 @@ public class BallTestScript : MonoBehaviour
 
         return value;
     }
-<<<<<<< HEAD
-    
-=======
+
 
     float verticalMove()
     {
@@ -110,5 +107,4 @@ public class BallTestScript : MonoBehaviour
     }
 
 
->>>>>>> refs/remotes/origin/Swipes
 }
