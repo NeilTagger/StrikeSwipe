@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,6 +22,8 @@ public class BallTestScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float angle = 0;
+
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
@@ -35,7 +38,7 @@ public class BallTestScript : MonoBehaviour
                 if (!detectSwipeOnlyAfterRelease)
                 {
                     fingerDown = touch.position;
-                    checkSwipe();
+                    angle = checkSwipe();
                 }
             }
 
@@ -43,11 +46,15 @@ public class BallTestScript : MonoBehaviour
             if (touch.phase == TouchPhase.Ended)
             {
                 fingerDown = touch.position;
-                checkSwipe();
+                angle = checkSwipe();
             }
         }
 
+        if (angle > 0)
+        {
 
+            Debug.Log(angle);
+        }
 
         if (Input.GetKeyDown("space"))
         {
@@ -69,22 +76,30 @@ public class BallTestScript : MonoBehaviour
 
         if (swipeVector.magnitude > SWIPE_THRESHOLD * SWIPE_THRESHOLD)
         {
-            Debug.Log("Detected Swipe");
+            Debug.Log(swipeVector.normalized);
 
-            return Vector2.Angle(baseDir, swipeVector);
+            return FindDegree(swipeVector.x, swipeVector.y);
         }
 
         return -1;
     }
 
+    public float FindDegree(float x, float y)
+    {
+        float value = (float)((Mathf.Atan2(x, y) / Math.PI) * 180f);
+        if (value < 0) value += 360f;
+
+        return value;
+    }
+
     float verticalMove()
     {
-        return Mathf.Abs(fingerDown.y - fingerUp.y);
+        return fingerDown.y - fingerUp.y;
     }
 
     float horizontalValMove()
     {
-        return Mathf.Abs(fingerDown.x - fingerUp.x);
+        return fingerDown.x - fingerUp.x;
     }
 
 
