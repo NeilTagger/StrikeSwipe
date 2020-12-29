@@ -54,18 +54,19 @@ public class PowerBarScript : MonoBehaviour
     }
     void Update()
     {
-        if (Input.touchCount > 0) // replace if with: Input.touchCount > 0
-        {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                Debug.Log("power stored");
-                powerBarOn = false;
-                barChangeSpeed = barChangeSpeed * 1.1f;
-                finalPower += currentPowerBarValue;
-                barReset();
-            }
-        }
+        
     }
+
+    public void AddPower()
+    {
+        Debug.Log("power stored");
+        powerBarOn = false;
+        barChangeSpeed = barChangeSpeed * 1.1f;
+        finalPower += currentPowerBarValue;
+        barReset();
+    }
+
+
     void barReset()
     {
         currentPowerBarValue = 0;
