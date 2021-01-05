@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
                 ControlFlying();
                 break;
             case GameStates.EndingPhase:
+                ControlEnding();
                 break;
             default:
                 break;
@@ -54,7 +55,7 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
-        timerOrDistance.text = "press to start";
+        timerOrDistance.text = "tap to start";
         if (Input.touchCount > 0)
         {
             PowerBar.gameObject.SetActive(true);
@@ -137,6 +138,11 @@ public class GameController : MonoBehaviour
         PowerBar.gameObject.SetActive(false);
         timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
     }
+    private void ControlEnding()
+    {
+        timerOrDistance.text = "tap to continue";
+    }
+
     #region Swipe Methods
     float checkSwipe()
     {
