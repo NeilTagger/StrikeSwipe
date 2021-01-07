@@ -14,7 +14,7 @@ public class DistanceMeterScript : MonoBehaviour
     private float ballDelta = 0;
     public float units = 50f;
     private float firstmark = 0;
-    // Start is called before the first frame update
+
     void Start()
     {
 
@@ -44,7 +44,6 @@ public class DistanceMeterScript : MonoBehaviour
     }
     public void SpawnMark(int markIndex)
     {
-        Debug.Log("spawned");
         MarkScript MarkHolder = Instantiate(scaleMarks[markIndex], new Vector3(transform.position.z + xspawn, Screen.height / 15, 0), transform.rotation, canvas.transform);
         activeMarks.Add(MarkHolder);
         activeMarks[activeMarks.Count-1].currentAmount = firstmark+((activeMarks.Count - 1 )* units);
@@ -55,10 +54,6 @@ public class DistanceMeterScript : MonoBehaviour
     {
 
         ballDelta = ball.transform.position.x - ballLastLocation;
-       /* while (ballDelta>Screen.width/(numOfMarks+2))
-        {
-            ballDelta -= Screen.width / (numOfMarks + 2);
-        }*/
         ballLastLocation = ball.transform.position.x;
         for (int i = 0; i < numOfMarks; i++)
         {
