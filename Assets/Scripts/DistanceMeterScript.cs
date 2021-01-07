@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DistanceMeterScript : MonoBehaviour
 {
-    public GameObject[] scaleMarks;
-    private List<GameObject> activeMarks = new List<GameObject>();
+    public MarkScript[] scaleMarks;
+    private List<MarkScript> activeMarks = new List<MarkScript>();
     private float xspawn;
     public int numOfMarks = 3;
     public GameObject canvas;
@@ -13,9 +13,20 @@ public class DistanceMeterScript : MonoBehaviour
     private float ballLastLocation = 0;
     private float ballDelta = 0;
     public float units = 50f;
+    private float firstmark = 0;
     // Start is called before the first frame update
     void Start()
     {
+
+        if(numOfMarks% 2 == 0)
+        {
+            firstmark = ((numOfMarks / 2)-1)* (units*-1f);
+        }
+        else
+        {
+            firstmark = (((numOfMarks / 2) - 0.5f) * (units * -1f));
+        }
+        
         transform.position = new Vector2(transform.position.x, Screen.height / 15);
         GameObject Distancebar = GameObject.Find("Canvas/Distancebar");
         var DistancebarRectTransform = Distancebar.transform as RectTransform;
@@ -27,7 +38,6 @@ public class DistanceMeterScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveMarks();
@@ -35,24 +45,34 @@ public class DistanceMeterScript : MonoBehaviour
     public void SpawnMark(int markIndex)
     {
         Debug.Log("spawned");
-        GameObject MarkHolder = Instantiate(scaleMarks[markIndex],new Vector3(transform.position.z + xspawn, Screen.height/15,0), transform.rotation, canvas.transform);
+        MarkScript MarkHolder = Instantiate(scaleMarks[markIndex], new Vector3(transform.position.z + xspawn, Screen.height / 15, 0), transform.rotation, canvas.transform);
         activeMarks.Add(MarkHolder);
+        activeMarks[activeMarks.Count-1].currentAmount = firstmark+((activeMarks.Count - 1 )* units);
+        activeMarks[activeMarks.Count - 1].SetMark();
         xspawn += Screen.width / (numOfMarks + 2);
     }
     private void moveMarks()
     {
 
         ballDelta = ball.transform.position.x - ballLastLocation;
-        while (ballDelta>Screen.width/(numOfMarks+2))
+       /* while (ballDelta>Screen.width/(numOfMarks+2))
         {
             ballDelta -= Screen.width / (numOfMarks + 2);
-        }
+        }*/
         ballLastLocation = ball.transform.position.x;
         for (int i = 0; i < numOfMarks; i++)
         {
             if (activeMarks[i].transform.position.x < (Screen.width * (i + 1)) / (numOfMarks + 2))
             {
                 activeMarks[i].transform.position = new Vector3(activeMarks[i].transform.position.x +(Screen.width/(numOfMarks+2)), activeMarks[i].transform.position.y, activeMarks[i].transform.position.z);
+                activeMarks[i].currentAmount += units;
+                activeMarks[i].SetMark();
+            }
+            if (activeMarks[i].transform.position.x > (Screen.width * (i + 2)) / (numOfMarks + 2))
+            {
+                activeMarks[i].transform.position = new Vector3(activeMarks[i].transform.position.x - (Screen.width / (numOfMarks + 2)), activeMarks[i].transform.position.y, activeMarks[i].transform.position.z);
+                activeMarks[i].currentAmount -= units;
+                activeMarks[i].SetMark();
             }
 
             if (ballDelta != 0)

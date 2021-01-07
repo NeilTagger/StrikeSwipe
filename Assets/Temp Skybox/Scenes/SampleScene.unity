@@ -1174,8 +1174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleMarks:
-  - {fileID: 8944876526491261310, guid: 6c5fc5dc95fa9dd478bbfd2c0d5a3495, type: 3}
-  numOfMarks: 5
+  - {fileID: 8552255337917819268, guid: 6c5fc5dc95fa9dd478bbfd2c0d5a3495, type: 3}
+  numOfMarks: 6
   canvas: {fileID: 2021042162}
   ball: {fileID: 160556840}
   units: 50
