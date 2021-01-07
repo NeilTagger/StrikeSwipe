@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
                 ControlFlying();
                 break;
             case GameStates.EndingPhase:
+                ControlEnding();
                 break;
             default:
                 break;
@@ -54,7 +55,7 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
-        timerOrDistance.text = "press to start";
+        timerOrDistance.text = "Tap to start";
         if (Input.touchCount > 0)
         {
             PowerBar.gameObject.SetActive(true);
@@ -88,6 +89,7 @@ public class GameController : MonoBehaviour
 
     private void ControlSwiping()
     {
+        timerOrDistance.text = "Swipe to launch!";
         float angle = 0;
 
         foreach (Touch touch in Input.touches)
@@ -120,7 +122,7 @@ public class GameController : MonoBehaviour
         {
 
             Debug.Log(angle);
-            print("Use stored power");
+
 
             Vector3 Power = Quaternion.Euler(0, 0, angle) * Vector3.right;
 
@@ -176,6 +178,11 @@ public class GameController : MonoBehaviour
         return fingerDown.x - fingerUp.x;
     }
     #endregion
+    private void ControlEnding()
+    {
+        timerOrDistance.text = "Tap to restart";
+
+    }
 
     public void ChangeStates()
     {
