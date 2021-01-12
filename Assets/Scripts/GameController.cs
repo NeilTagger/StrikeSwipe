@@ -10,13 +10,20 @@ public class GameController : MonoBehaviour
     public BallTestScript Ball;
     public PowerBarScript PowerBar;
 
-    public int tempCounter;
+    public Transform OriginPoint;
+
+    public Level[] Levels;
+    public Level CurrLevel;
+
+    public int tempCounter, levelCounter;
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
 
     public float SWIPE_THRESHOLD = 20f;
+
+    public bool WonLevel;
 
     public GameStates state;
 
@@ -41,18 +48,29 @@ public class GameController : MonoBehaviour
                 ControlSwiping();
                 break;
             case GameStates.FlyingPhase:
+                ControlFlying();
                 break;
             case GameStates.EndingPhase:
+                ControlEnding();
                 break;
             default:
                 break;
         }
     }
 
+    
+
     private void ControlStart()
     {
-        ChangeStates();
-        tempCounter = 0;
+        if (Input.touchCount > 0) 
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                ChangeStates();
+                tempCounter = 0;
+            }
+        }
+        
     }
 
     private void ControlTapping()
@@ -119,6 +137,47 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void ControlFlying()
+    {
+        bool xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
+
+        bool yPassed = !CurrLevel.RequiresHeight || Ball.transform.position.y > CurrLevel.HeightMeasurement;
+
+        if (xPassed && yPassed)
+        {
+            WonLevel = true;
+        }
+
+        if (Ball.rb.velocity.magnitude == 0)
+        {
+            ChangeStates();
+        }
+    }
+
+    private void ControlEnding()
+    {
+        if (WonLevel)
+        {
+            levelCounter++;
+
+            //Show Level Won logic
+        }
+        else
+        {
+            //Show Level Lost Logic
+        }
+
+        if (Input.touchCount > 0)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                LoadLevel();
+                ChangeStates();
+            }
+        }
+    }
+
+
     #region Swipe Methods
     float checkSwipe()
     {
@@ -158,6 +217,20 @@ public class GameController : MonoBehaviour
         return fingerDown.x - fingerUp.x;
     }
     #endregion
+
+    #region Level Methods
+    public void LoadLevel()
+    {
+        CurrLevel = Levels[levelCounter];
+
+        Ball.rb.velocity = Vector3.zero;
+        Ball.transform.position = OriginPoint.position;
+
+
+    }
+
+    #endregion
+
 
     public void ChangeStates()
     {
