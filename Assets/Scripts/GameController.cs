@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour
 {
     public BallTestScript Ball;
     public PowerBarScript PowerBar;
-<<<<<<< HEAD
 
     public Transform OriginPoint;
 
@@ -18,9 +17,7 @@ public class GameController : MonoBehaviour
     public Level CurrLevel;
 
     public int tempCounter, levelCounter;
-=======
     public Text timerOrDistance;
->>>>>>> origin/Pooling
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
@@ -69,7 +66,6 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
-<<<<<<< HEAD
         if (Input.touchCount > 0) 
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -79,7 +75,6 @@ public class GameController : MonoBehaviour
             }
         }
         
-=======
         timerOrDistance.text = "press to start";
         if (Input.touchCount > 0)
         {
@@ -88,7 +83,6 @@ public class GameController : MonoBehaviour
             ChangeStates();
 
         }
->>>>>>> origin/Pooling
     }
 
     private void ControlTapping()
@@ -159,9 +153,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
     public void ControlFlying()
     {
+
+        PowerBar.gameObject.SetActive(false);
+
         bool xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
 
         bool yPassed = !CurrLevel.RequiresHeight || Ball.transform.position.y > CurrLevel.HeightMeasurement;
@@ -175,6 +171,8 @@ public class GameController : MonoBehaviour
         {
             ChangeStates();
         }
+
+        timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
     }
 
     private void ControlEnding()
@@ -200,14 +198,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-
-=======
-    private void ControlFlying()
-    {
-        PowerBar.gameObject.SetActive(false);
-        timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
-    }
->>>>>>> origin/Pooling
     #region Swipe Methods
     float checkSwipe()
     {

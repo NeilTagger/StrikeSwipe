@@ -921,7 +921,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ball: {fileID: 160556845}
   PowerBar: {fileID: 404161724}
-<<<<<<< HEAD
   OriginPoint: {fileID: 2126828791}
   Levels: []
   CurrLevel: {fileID: 0}
@@ -930,12 +929,10 @@ MonoBehaviour:
   detectSwipeOnlyAfterRelease: 0
   SWIPE_THRESHOLD: 20
   WonLevel: 0
-=======
   timerOrDistance: {fileID: 1451633339}
   detectSwipeOnlyAfterRelease: 0
   SWIPE_THRESHOLD: 20
   timeRemaining: 10
->>>>>>> origin/Pooling
   state: 0
 --- !u!4 &1382560142
 Transform:
@@ -1143,11 +1140,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-<<<<<<< HEAD
   m_RootOrder: 9
-=======
-  m_RootOrder: 8
->>>>>>> origin/Pooling
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2021042162
 GameObject:
