@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,13 @@ public class PowerBarScript : MonoBehaviour
     public Image powerBarMask;
     public float barChangeSpeed = 1f;
     float maxPowerBarValue = 100;
+    float maxPowerBarSpeed = 15;
     float currentPowerBarValue;
     bool powerIsIncreasing;
     bool powerBarOn;
+    float growth=1.25f;
     public float finalPower = 0;
-    void Start()
+    public void Initialize()
     {
         finalPower = 0;
         barChangeSpeed = 2;
@@ -61,8 +64,18 @@ public class PowerBarScript : MonoBehaviour
     {
         Debug.Log("power stored");
         powerBarOn = false;
-        barChangeSpeed = barChangeSpeed * 1.1f;
-        finalPower += currentPowerBarValue;
+        if (barChangeSpeed <= maxPowerBarSpeed)
+        {
+            barChangeSpeed = barChangeSpeed + (currentPowerBarValue / 100);
+        }
+        else
+        {
+            barChangeSpeed = maxPowerBarSpeed;
+        }
+
+        finalPower += (float)(Math.Pow(currentPowerBarValue, growth));
+
+
         barReset();
     }
 

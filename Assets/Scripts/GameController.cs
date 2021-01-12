@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameStates { IdlePhase, PowerPhase, SwipePhase, FlyingPhase, EndingPhase }
 
@@ -9,6 +10,7 @@ public class GameController : MonoBehaviour
 {
     public BallTestScript Ball;
     public PowerBarScript PowerBar;
+<<<<<<< HEAD
 
     public Transform OriginPoint;
 
@@ -16,12 +18,16 @@ public class GameController : MonoBehaviour
     public Level CurrLevel;
 
     public int tempCounter, levelCounter;
+=======
+    public Text timerOrDistance;
+>>>>>>> origin/Pooling
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
 
     public float SWIPE_THRESHOLD = 20f;
+    public float timeRemaining;
 
     public bool WonLevel;
 
@@ -31,6 +37,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         state = GameStates.IdlePhase;
+        PowerBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -62,6 +69,7 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
+<<<<<<< HEAD
         if (Input.touchCount > 0) 
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -71,21 +79,35 @@ public class GameController : MonoBehaviour
             }
         }
         
+=======
+        timerOrDistance.text = "press to start";
+        if (Input.touchCount > 0)
+        {
+            PowerBar.gameObject.SetActive(true);
+            PowerBar.Initialize();
+            ChangeStates();
+
+        }
+>>>>>>> origin/Pooling
     }
 
     private void ControlTapping()
     {
-        if (Input.touchCount > 0) // replace if with: Input.touchCount > 0
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerOrDistance.text = "Time remaining: " + timeRemaining.ToString("F1");
+        }
+        if (Input.touchCount > 0)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                tempCounter++;
                 PowerBar.AddPower();
             }
 
         }
 
-        if (tempCounter > 10)
+        if (timeRemaining <= 0)
         {
             ChangeStates();
         }
@@ -137,6 +159,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     public void ControlFlying()
     {
         bool xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
@@ -178,6 +201,13 @@ public class GameController : MonoBehaviour
     }
 
 
+=======
+    private void ControlFlying()
+    {
+        PowerBar.gameObject.SetActive(false);
+        timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
+    }
+>>>>>>> origin/Pooling
     #region Swipe Methods
     float checkSwipe()
     {
