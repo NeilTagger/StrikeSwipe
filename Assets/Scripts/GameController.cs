@@ -66,9 +66,8 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
-<<<<<<< HEAD
         timerOrDistance.text = "Tap to start";
-=======
+
         if (Input.touchCount > 0) 
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -79,7 +78,6 @@ public class GameController : MonoBehaviour
         }
         
         timerOrDistance.text = "press to start";
->>>>>>> refs/remotes/origin/Pooling
         if (Input.touchCount > 0)
         {
             PowerBar.gameObject.SetActive(true);
@@ -195,6 +193,8 @@ public class GameController : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
+            timerOrDistance.text = "Tap to restart";
+
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 LoadLevel();
@@ -242,11 +242,6 @@ public class GameController : MonoBehaviour
         return fingerDown.x - fingerUp.x;
     }
     #endregion
-    private void ControlEnding()
-    {
-        timerOrDistance.text = "Tap to restart";
-
-    }
 
     #region Level Methods
     public void LoadLevel()
