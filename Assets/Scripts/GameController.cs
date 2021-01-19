@@ -17,22 +17,26 @@ public class GameController : MonoBehaviour
     public Level CurrLevel;
 
     public int tempCounter, levelCounter;
-    public Text timerOrDistance;
+    public Text timerOrDistance, levelGoalText;
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
 
     public float SWIPE_THRESHOLD = 20f;
+    public float TAP_TIME = 10f;
     public float timeRemaining;
 
     public bool WonLevel;
 
     public GameStates state;
 
+    public static GameController Instance;
+
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         state = GameStates.IdlePhase;
         PowerBar.gameObject.SetActive(false);
     }
@@ -62,29 +66,51 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
+
 
     private void ControlStart()
     {
+        levelGoalText.gameObject.SetActive(true);
+
         timerOrDistance.text = "Tap to start";
 
-        if (Input.touchCount > 0) 
+        levelGoalText.text = GetLevelText();
+
+        if (Input.touchCount > 0)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
+                PowerBar.gameObject.SetActive(true);
+                PowerBar.Initialize();
+                levelGoalText.gameObject.SetActive(false);
                 ChangeStates();
                 tempCounter = 0;
             }
         }
-        
-        timerOrDistance.text = "press to start";
-        if (Input.touchCount > 0)
-        {
-            PowerBar.gameObject.SetActive(true);
-            PowerBar.Initialize();
-            ChangeStates();
+    }
 
+    private string GetLevelText()
+    {
+        string Text = "";
+
+        if (CurrLevel.RequiresDistance)
+        {
+            Text += "Reach a distance of " + CurrLevel.DistanceMeasurement;
         }
+
+        if (CurrLevel.RequiresHeight)
+        {
+            if (Text != "")
+            {
+                Text += " and ";
+            }
+
+            Text += "Reach a height of " + CurrLevel.HeightMeasurement;
+        }
+
+        Text += "!";
+
+        return Text;
     }
 
     private void ControlTapping()
@@ -159,7 +185,7 @@ public class GameController : MonoBehaviour
     public void ControlFlying()
     {
 
-        PowerBar.gameObject.SetActive(false);
+
 
         bool xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
 
@@ -175,25 +201,15 @@ public class GameController : MonoBehaviour
             ChangeStates();
         }
 
-        timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
     }
 
     private void ControlEnding()
     {
-        if (WonLevel)
-        {
-            levelCounter++;
-
-            //Show Level Won logic
-        }
-        else
-        {
-            //Show Level Lost Logic
-        }
+        
 
         if (Input.touchCount > 0)
         {
-            timerOrDistance.text = "Tap to restart";
+            
 
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
@@ -244,6 +260,17 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Level Methods
+
+    public void SkipLevel()
+    {
+        state = GameStates.IdlePhase;
+
+        levelCounter++;
+
+        LoadLevel();
+    
+    }
+
     public void LoadLevel()
     {
         CurrLevel = Levels[levelCounter];
@@ -262,15 +289,33 @@ public class GameController : MonoBehaviour
         switch (state)
         {
             case GameStates.IdlePhase:
+                Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
+                timeRemaining = TAP_TIME;
                 state = GameStates.PowerPhase;
                 break;
             case GameStates.PowerPhase:
                 state = GameStates.SwipePhase;
                 break;
             case GameStates.SwipePhase:
+                PowerBar.gameObject.SetActive(false);
+                Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
                 state = GameStates.FlyingPhase;
                 break;
             case GameStates.FlyingPhase:
+                timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
+
+                levelGoalText.gameObject.SetActive(true);
+
+                if (WonLevel)
+                {
+                    levelCounter++;
+
+                    levelGoalText.text = "You won! Tap to advance to the next level";
+                }
+                else
+                {
+                    levelGoalText.text = "You lost! Tap to restart the level";
+                }
                 state = GameStates.EndingPhase;
                 break;
             case GameStates.EndingPhase:

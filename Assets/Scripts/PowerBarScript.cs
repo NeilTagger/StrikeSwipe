@@ -66,14 +66,15 @@ public class PowerBarScript : MonoBehaviour
         powerBarOn = false;
         if (barChangeSpeed <= maxPowerBarSpeed)
         {
-            barChangeSpeed = barChangeSpeed + (currentPowerBarValue / 100);
+            barChangeSpeed = barChangeSpeed + (float)Math.Pow((currentPowerBarValue / 100), 2);
         }
         else
         {
             barChangeSpeed = maxPowerBarSpeed;
         }
 
-        finalPower += (float)(Math.Pow(currentPowerBarValue, growth));
+        finalPower += (float)(Math.Pow(currentPowerBarValue, growth)) * (currentPowerBarValue / 100);
+        GameController.Instance.Ball.GetComponent<Renderer>().material.SetFloat("Power", finalPower);
 
 
         barReset();
