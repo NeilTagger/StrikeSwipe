@@ -11,10 +11,12 @@ public class ParallaxScript : MonoBehaviour
     public GameObject cam;
     public float parallaxEffect;
     public float parallayEffect;
+    private Vector3 origin;
 
 
     void Start()
     {
+        origin = transform.position;
         length = GetComponentInChildren<SpriteRenderer>().bounds.size.x;
         startposx = transform.position.x;
         startposy = 11f;
@@ -32,5 +34,10 @@ public class ParallaxScript : MonoBehaviour
         {
             startposx += length;
         }
+    }
+
+    public void resetBackground()
+    {
+        startposx = 0;
     }
 }

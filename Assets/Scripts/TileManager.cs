@@ -49,8 +49,12 @@ public class TileManager : MonoBehaviour
         xspawn =0;
         for (int i = 0; i < numOfTiles; i++)
         {
-            MoveTile();
+            activeTiles[nextToMove].transform.position=new Vector3(xspawn,transform.position.y,transform.position.z);
+            nextToMove = (nextToMove + 1) % numOfTiles;
+            xspawn += tileLength;
         }
+       
+        
 
     }
 }

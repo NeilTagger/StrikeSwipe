@@ -310,7 +310,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160556840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.3, z: 0}
+  m_LocalPosition: {x: 0, y: 5.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1932,6 +1932,11 @@ MonoBehaviour:
   Ball: {fileID: 160556845}
   PowerBar: {fileID: 404161724}
   tileManager: {fileID: 2006854025}
+  backgrounds:
+  - {fileID: 1885140883}
+  - {fileID: 1086847036}
+  - {fileID: 685400481}
+  - {fileID: 1793884628}
   OriginPoint: {fileID: 2126828791}
   Levels:
   - {fileID: 11400000, guid: bdf9027335d12184984dda925a9e893b, type: 2}
@@ -1943,6 +1948,7 @@ MonoBehaviour:
   timerOrDistance: {fileID: 1451633339}
   levelGoalText: {fileID: 1093950267}
   detectSwipeOnlyAfterRelease: 0
+  waitForSwipe: 1
   SWIPE_THRESHOLD: 20
   TAP_TIME: 10
   timeRemaining: 10
@@ -2968,7 +2974,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126828790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalPosition: {x: 0, y: 5.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

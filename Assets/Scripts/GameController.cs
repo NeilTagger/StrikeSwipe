@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
 {
     public BallTestScript Ball;
     public PowerBarScript PowerBar;
+    public TileManager tileManager;
+    public ParallaxScript[] backgrounds;
 
     public Transform OriginPoint;
 
@@ -22,6 +24,7 @@ public class GameController : MonoBehaviour
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
+    public bool waitForSwipe = true;
 
     public float SWIPE_THRESHOLD = 20f;
     public float TAP_TIME = 10f;
@@ -70,6 +73,7 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
+        waitForSwipe = true;
         levelGoalText.gameObject.SetActive(true);
 
         timerOrDistance.text = "Tap to start";
@@ -129,9 +133,11 @@ public class GameController : MonoBehaviour
 
         }
 
-        if (timeRemaining <= 0)
+        if (timeRemaining <= 0 && waitForSwipe)
         {
+            waitForSwipe = false;
             Invoke("ChangeStates", 0.5f);
+            Debug.Log("invoked once more");
         }
     }
 
@@ -274,10 +280,14 @@ public class GameController : MonoBehaviour
     public void LoadLevel()
     {
         CurrLevel = Levels[levelCounter];
-
+        waitForSwipe = false;
         Ball.rb.velocity = Vector3.zero;
         Ball.transform.position = OriginPoint.position;
-
+        for (int i = 0; i < backgrounds.Length; i++)
+        {
+            backgrounds[i].resetBackground();
+        }
+        tileManager.ResetTiles();
 
     }
 
