@@ -44,4 +44,13 @@ public class TileManager : MonoBehaviour
         nextToMove= (nextToMove+1) % numOfTiles;
         xspawn += tileLength;
     }
+    public void ResetTiles()
+    {
+        xspawn =0;
+        for (int i = 0; i < numOfTiles; i++)
+        {
+            MoveTile();
+        }
+
+    }
 }

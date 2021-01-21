@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class ParallaxScript : MonoBehaviour
 {
-    public float length;
+    private float length;
     private float startposx,startposy;
     public GameObject cam;
     public float parallaxEffect;
@@ -17,7 +17,7 @@ public class ParallaxScript : MonoBehaviour
     {
         length = GetComponentInChildren<SpriteRenderer>().bounds.size.x;
         startposx = transform.position.x;
-        startposy = 5.5f;
+        startposy = 11f;
         
     }
 
