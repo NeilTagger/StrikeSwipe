@@ -15,7 +15,7 @@ public class ParallaxScript : MonoBehaviour
 
     void Start()
     {
-        length = GetComponentInChildren<SpriteRenderer>().bounds.size.x*1.5f;
+        length = GetComponentInChildren<SpriteRenderer>().bounds.size.x;
         startposx = transform.position.x;
         startposy = 5.5f;
         
@@ -30,7 +30,7 @@ public class ParallaxScript : MonoBehaviour
         transform.position = new Vector3(startposx + distx, startposy + disty, transform.position.z);
         if (cam.transform.position.x- transform.position.x > length/3)
         {
-            startposx += (length/3)*2f;
+            startposx += length;
         }
     }
 }
