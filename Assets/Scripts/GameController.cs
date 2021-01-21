@@ -131,7 +131,7 @@ public class GameController : MonoBehaviour
 
         if (timeRemaining <= 0)
         {
-            ChangeStates();
+            Invoke("ChangeStates", 0.5f);
         }
     }
 
