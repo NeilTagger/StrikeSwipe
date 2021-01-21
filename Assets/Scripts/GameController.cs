@@ -137,7 +137,6 @@ public class GameController : MonoBehaviour
         {
             waitForSwipe = false;
             Invoke("ChangeStates", 0.5f);
-            Debug.Log("invoked once more");
         }
     }
 
@@ -175,7 +174,7 @@ public class GameController : MonoBehaviour
         if (angle > 0)
         {
 
-            Debug.Log(angle);
+            Debug.Log("angle is: "+angle);
 
 
             Vector3 Power = Quaternion.Euler(0, 0, angle) * Vector3.right;
@@ -237,7 +236,7 @@ public class GameController : MonoBehaviour
 
         if (swipeVector.magnitude > SWIPE_THRESHOLD * SWIPE_THRESHOLD)
         {
-            Debug.Log(swipeVector.normalized);
+            Debug.Log("swipevector normalized: "+swipeVector.normalized);
 
             return FindDegree(swipeVector.x, swipeVector.y);
         }
