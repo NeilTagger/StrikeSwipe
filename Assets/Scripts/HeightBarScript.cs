@@ -14,33 +14,21 @@ public class HeightBarScript : MonoBehaviour
     private float ballDelta = 0;
     public float units = 50f;
     private float firstmark = 0;
+    public bool draw = false;
+    private bool Initiated = false;
 
     void Start()
     {
-        if (numOfMarks % 2 == 0)
-        {
-            firstmark = ((numOfMarks / 2) - 1) * (units * -1f);
-        }
-        else
-        {
-            firstmark = (((numOfMarks / 2) - 0.5f) * (units * -1f));
-        }
-
-        transform.position = new Vector2(Screen.width / 15, transform.position.y);
-        GameObject Distancebar = GameObject.Find("Canvas/Heightbar");
-        var DistancebarRectTransform = Distancebar.transform as RectTransform;
-        DistancebarRectTransform.sizeDelta = new Vector2(DistancebarRectTransform.sizeDelta.x,(Screen.height / (numOfMarks + 2) * (numOfMarks)));
-        yspawn = Screen.height / (numOfMarks + 2) * 2;
-        for (int i = 0; i < numOfMarks; i++)
-        {
-            SpawnMark(0);
-        }
+       
     }
 
  
     void Update()
     {
-        moveMarks();
+        if (draw)
+        {
+            moveMarks();
+        }
     }
     public void SpawnMark(int markIndex)
     {
@@ -74,6 +62,32 @@ public class HeightBarScript : MonoBehaviour
             {
                 activeMarks[i].transform.position = new Vector3( activeMarks[i].transform.position.x, activeMarks[i].transform.position.y - ((Screen.height * ballDelta) / (units * (numOfMarks + 2))), activeMarks[i].transform.position.z);
             }
+        }
+    }
+    public void drawMarks()
+    {
+        if (!Initiated)
+        {
+            if (numOfMarks % 2 == 0)
+            {
+                firstmark = ((numOfMarks / 2) - 1) * (units * -1f);
+            }
+            else
+            {
+                firstmark = (((numOfMarks / 2) - 0.5f) * (units * -1f));
+            }
+
+            transform.position = new Vector2(Screen.width / 15, transform.position.y);
+            GameObject Distancebar = GameObject.Find("Canvas/Heightbar");
+            var DistancebarRectTransform = Distancebar.transform as RectTransform;
+            DistancebarRectTransform.sizeDelta = new Vector2(DistancebarRectTransform.sizeDelta.x, (Screen.height / (numOfMarks + 2) * (numOfMarks)));
+            yspawn = Screen.height / (numOfMarks + 2) * 2;
+            for (int i = 0; i < numOfMarks; i++)
+            {
+                SpawnMark(0);
+            }
+            draw = true;
+            Initiated = true;
         }
     }
 }

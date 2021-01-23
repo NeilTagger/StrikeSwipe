@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     public PowerBarScript PowerBar;
     public TileManager tileManager;
     public ParallaxScript[] backgrounds;
+    public DistanceMeterScript disMeter;
+    public HeightBarScript hiMeter;
 
     public Transform OriginPoint;
 
@@ -31,6 +33,7 @@ public class GameController : MonoBehaviour
     public float timeRemaining;
 
     public bool WonLevel;
+    public bool gameStarted = false;
 
     public GameStates state;
 
@@ -73,14 +76,18 @@ public class GameController : MonoBehaviour
 
     private void ControlStart()
     {
+
         waitForSwipe = true;
         levelGoalText.gameObject.SetActive(true);
 
         timerOrDistance.text = "Tap to start";
 
         levelGoalText.text = GetLevelText();
-
-        if (Input.touchCount > 0)
+        if (gameStarted) 
+        {
+            disMeter.drawMarks();
+            hiMeter.drawMarks();
+            if (Input.touchCount > 0)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
@@ -91,6 +98,7 @@ public class GameController : MonoBehaviour
                 tempCounter = 0;
             }
         }
+    }
     }
 
     private string GetLevelText()
@@ -144,6 +152,7 @@ public class GameController : MonoBehaviour
     {
         timerOrDistance.text = "Swipe to launch!";
         float angle = 0;
+        
 
         foreach (Touch touch in Input.touches)
         {
