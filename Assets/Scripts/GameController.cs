@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
 
     public bool WonLevel;
     public bool gameStarted = false;
+    public bool flying;
 
     public GameStates state;
 
@@ -210,11 +211,14 @@ public class GameController : MonoBehaviour
             WonLevel = true;
         }
 
-        if (Ball.rb.velocity.magnitude == 0)
+        if (Ball.rb.velocity.magnitude == 0 && flying)
         {
             ChangeStates();
         }
-
+        else if (!flying)
+        {
+            flying = true;
+        }
     }
 
     private void ControlEnding()
@@ -315,6 +319,7 @@ public class GameController : MonoBehaviour
                 state = GameStates.SwipePhase;
                 break;
             case GameStates.SwipePhase:
+                flying = false;
                 PowerBar.gameObject.SetActive(false);
                 Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
                 state = GameStates.FlyingPhase;
