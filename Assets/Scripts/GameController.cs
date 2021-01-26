@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
 
     public int tempCounter, levelCounter;
     public Text timerOrDistance, levelGoalText;
+    public Image ArrowImage;
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
@@ -152,6 +153,7 @@ public class GameController : MonoBehaviour
     private void ControlSwiping()
     {
         timerOrDistance.text = "Swipe to launch!";
+
         float angle = 0;
         
 
@@ -316,11 +318,14 @@ public class GameController : MonoBehaviour
                 state = GameStates.PowerPhase;
                 break;
             case GameStates.PowerPhase:
+                ArrowImage.gameObject.SetActive(true);
                 state = GameStates.SwipePhase;
                 break;
             case GameStates.SwipePhase:
                 flying = false;
                 PowerBar.gameObject.SetActive(false);
+                ArrowImage.gameObject.SetActive(false);
+
                 Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
                 state = GameStates.FlyingPhase;
                 break;
