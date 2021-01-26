@@ -15,8 +15,11 @@ public class PowerBarScript : MonoBehaviour
     bool powerBarOn;
     float growth=1.25f;
     public float finalPower = 0;
+    private AudioSource sound;
     public void Initialize()
     {
+        sound = GetComponent<AudioSource>();
+        sound.pitch = 1f;
         finalPower = 0;
         barChangeSpeed = 2;
         currentPowerBarValue = 0;
@@ -62,7 +65,11 @@ public class PowerBarScript : MonoBehaviour
 
     public void AddPower()
     {
-        Debug.Log("power stored");
+        sound.Play();
+        if (sound.pitch < 3)
+        {
+            sound.pitch += 0.05f;
+        }
         powerBarOn = false;
         if (barChangeSpeed <= maxPowerBarSpeed)
         {
