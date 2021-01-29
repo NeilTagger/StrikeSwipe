@@ -26,11 +26,11 @@ public class GameController : MonoBehaviour
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
-    public bool detectSwipeOnlyAfterRelease = false;
+    public bool detectSwipeOnlyAfterRelease = true;
     public bool waitForSwipe = true;
 
-    public float SWIPE_THRESHOLD = 20f;
-    public float TAP_TIME = 10f;
+    public float SWIPE_THRESHOLD = 30f;
+    public float TAP_TIME = 5f;
     public float timeRemaining;
 
     public bool WonLevel;
@@ -146,13 +146,12 @@ public class GameController : MonoBehaviour
         if (timeRemaining <= 0 && waitForSwipe)
         {
             waitForSwipe = false;
-            Invoke("ChangeStates", 0.5f);
+            Invoke("ChangeStates", 0.15f);
         }
     }
 
     private void ControlSwiping()
     {
-        timerOrDistance.text = "Swipe to launch!";
 
         float angle = 0;
         
@@ -185,6 +184,14 @@ public class GameController : MonoBehaviour
 
         if (angle > 0)
         {
+
+            if (angle > 90)
+            {
+                angle = 90;
+            }
+
+            angle = Mathf.Lerp(angle, 45, 0.05f);
+
 
             Debug.Log("angle is: "+angle);
 
@@ -319,18 +326,23 @@ public class GameController : MonoBehaviour
                 break;
             case GameStates.PowerPhase:
                 ArrowImage.gameObject.SetActive(true);
+                PowerBar.gameObject.SetActive(false);
+                timerOrDistance.text = "Swipe to launch!";
+
+
                 state = GameStates.SwipePhase;
                 break;
             case GameStates.SwipePhase:
+                timerOrDistance.gameObject.SetActive(false);
                 flying = false;
-                PowerBar.gameObject.SetActive(false);
                 ArrowImage.gameObject.SetActive(false);
 
                 Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
                 state = GameStates.FlyingPhase;
                 break;
             case GameStates.FlyingPhase:
-                timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2");
+                timerOrDistance.gameObject.SetActive(true);
+                timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2") + '\n' + "Height traveled: " + Ball.rb.position.y.ToString("F2");
 
                 levelGoalText.gameObject.SetActive(true);
 

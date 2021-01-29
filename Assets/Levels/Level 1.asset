@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RequiresDistance: 1
   RequiresHeight: 0
-  DistanceMeasurement: 500
+  DistanceLock: 0
+  HeightLock: 0
+  DistanceMeasurement: 350
   HeightMeasurement: 0
