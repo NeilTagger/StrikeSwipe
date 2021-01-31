@@ -5,9 +5,14 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     public GameController gameController;
-   public void PlayGame()
+    private AudioSource sound;
+    void Start()
     {
-        Debug.Log("play");
+        sound = GetComponent<AudioSource>();
+    }
+    public void PlayGame()
+    {
+        sound.Play();
         Invoke("startGame", 0.1f);
     }
     public void QuitGame()

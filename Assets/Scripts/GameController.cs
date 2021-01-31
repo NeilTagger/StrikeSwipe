@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
     public ParallaxScript[] backgrounds;
     public DistanceMeterScript disMeter;
     public HeightBarScript hiMeter;
+    private AudioSource sound;
+
 
     public Transform OriginPoint;
 
@@ -47,6 +49,7 @@ public class GameController : MonoBehaviour
         Instance = this;
         state = GameStates.IdlePhase;
         PowerBar.gameObject.SetActive(false);
+        sound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -93,6 +96,7 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
+                sound.Play();
                 PowerBar.gameObject.SetActive(true);
                 PowerBar.Initialize();
                 levelGoalText.gameObject.SetActive(false);
@@ -199,7 +203,7 @@ public class GameController : MonoBehaviour
             Vector3 Power = Quaternion.Euler(0, 0, angle) * Vector3.right;
 
             Power *= PowerBar.finalPower;
-
+            Ball.PlaySound(1);
             Ball.rb.AddForce(Power);
             ChangeStates();
 
@@ -236,10 +240,10 @@ public class GameController : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            
 
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
+                sound.Play();
                 LoadLevel();
                 ChangeStates();
             }
@@ -356,6 +360,7 @@ public class GameController : MonoBehaviour
                 {
                     levelGoalText.text = "You lost! Tap to restart the level";
                 }
+
                 state = GameStates.EndingPhase;
                 break;
             case GameStates.EndingPhase:

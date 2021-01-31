@@ -20,8 +20,14 @@ public class PowerBarScript : MonoBehaviour
     bool powerBarOn;
     float growth=1.25f;
     public float finalPower = 0;
+    public AudioClip GoodSound;
+    public AudioClip GreatSound;
+    private AudioSource sound;
+
     public void Initialize()
     {
+        sound = GetComponent<AudioSource>();
+        sound.pitch = 1f;
         finalPower = 0;
         barChangeSpeed = 3.5f;
         currentPowerBarValue = 0;
@@ -69,7 +75,7 @@ public class PowerBarScript : MonoBehaviour
     {
         float actualPower = currentPowerBarValue;
 
-        Debug.Log("power stored");
+        
         powerBarOn = false;
         if (currentPowerBarValue  > barThreashold)
         {
@@ -83,10 +89,12 @@ public class PowerBarScript : MonoBehaviour
         else if (currentPowerBarValue < greatThreashold)
         {
             StartCoroutine(startBarGlow(Color.yellow));
+            sound.PlayOneShot(GoodSound);
         }
         else
         {
             StartCoroutine(startBarGlow(Color.green));
+            sound.PlayOneShot(GreatSound);
         }
 
 
@@ -144,6 +152,5 @@ public class PowerBarScript : MonoBehaviour
         currentPowerBarValue = 0;
         powerIsIncreasing = true;
         powerBarOn = true;
-        Debug.Log(powerBarOn);
     }
 }
