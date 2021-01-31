@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class PowerBarScript : MonoBehaviour
 {
-    public Image powerBarMask;
+    public Image powerBarMask, powerBarGlow;
     public float barChangeSpeed = 1f;
+    public float GlowSpeed;
     float maxPowerBarValue = 100;
     float maxPowerBarSpeed = 15;
     float barThreashold = 92.5f;
@@ -61,7 +62,7 @@ public class PowerBarScript : MonoBehaviour
     }
     void Update()
     {
-        
+
     }
 
     public void AddPower()
@@ -77,15 +78,15 @@ public class PowerBarScript : MonoBehaviour
 
         if (currentPowerBarValue < goodTheashold)
         {
-
+            StartCoroutine(startBarGlow(Color.red));
         }
         else if (currentPowerBarValue < greatThreashold)
         {
-
+            StartCoroutine(startBarGlow(Color.yellow));
         }
         else
         {
-
+            StartCoroutine(startBarGlow(Color.green));
         }
 
 
@@ -103,6 +104,38 @@ public class PowerBarScript : MonoBehaviour
 
 
         barReset();
+    }
+
+    public IEnumerator startBarGlow(Color C)
+    {
+        Color Copy = C;
+        C.a = 0;
+        powerBarGlow.color = C;
+        Copy.a = 1;
+
+        float tick = 0;
+
+        while (powerBarGlow.color.a != 1)
+        {
+            powerBarGlow.color = Color.Lerp(C, Copy, tick);
+            tick += Time.deltaTime * GlowSpeed;
+
+            yield return null;
+
+        }
+
+        yield return new WaitForSeconds(0.01f);
+
+        while (powerBarGlow.color.a != 0)
+        {
+            powerBarGlow.color = Color.Lerp(C, Copy, tick);
+            tick -= Time.deltaTime * GlowSpeed;
+
+            yield return null;
+        }
+
+        powerBarGlow.color = new Color(0, 0, 0, 0);
+
     }
 
 
