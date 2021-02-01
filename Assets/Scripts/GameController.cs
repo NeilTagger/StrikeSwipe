@@ -28,20 +28,22 @@ public class GameController : MonoBehaviour
 
     private Vector2 fingerDown;
     private Vector2 fingerUp;
-    public bool detectSwipeOnlyAfterRelease = true;
+    public bool detectSwipeOnlyAfterRelease = false;
     public bool waitForSwipe = true;
 
-    public float SWIPE_THRESHOLD = 30f;
+    public float SWIPE_THRESHOLD = 20f;
     public float TAP_TIME = 5f;
     public float timeRemaining;
 
-    public bool WonLevel;
+    public bool WonLevel, FailedLevel;
     public bool gameStarted = false;
     public bool flying;
 
     public GameStates state;
 
     public static GameController Instance;
+
+    float flyingHeight;
 
     // Start is called before the first frame update
     void Start()
@@ -88,23 +90,24 @@ public class GameController : MonoBehaviour
         timerOrDistance.text = "Tap to start";
 
         levelGoalText.text = GetLevelText();
-        if (gameStarted) 
+        if (gameStarted)
         {
             disMeter.drawMarks();
             hiMeter.drawMarks();
             if (Input.touchCount > 0)
-        {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                sound.Play();
-                PowerBar.gameObject.SetActive(true);
-                PowerBar.Initialize();
-                levelGoalText.gameObject.SetActive(false);
-                ChangeStates();
-                tempCounter = 0;
+                if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    sound.Play();
+                    PowerBar.gameObject.SetActive(true);
+                    PowerBar.Initialize();
+                    PowerBar.Initialize();
+                    levelGoalText.gameObject.SetActive(false);
+                    ChangeStates();
+                    tempCounter = 0;
+                }
             }
         }
-    }
     }
 
     private string GetLevelText()
@@ -125,6 +128,12 @@ public class GameController : MonoBehaviour
 
             Text += "Reach a height of " + CurrLevel.HeightMeasurement;
         }
+        else if (CurrLevel.HeightLock)
+        {
+            Text += " and Don't reach a height of " + CurrLevel.HeightMeasurement;
+        }
+
+
 
         Text += "!";
 
@@ -212,12 +221,22 @@ public class GameController : MonoBehaviour
 
     public void ControlFlying()
     {
+        bool xPassed = false, yPassed = false;
 
+        if (!FailedLevel)
+        {
+            FailedLevel = (Ball.transform.position.y > CurrLevel.HeightMeasurement && (CurrLevel.HeightLock)) ||
+                          (Ball.transform.position.x > CurrLevel.DistanceMeasurement && (CurrLevel.DistanceLock));
 
+            xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
 
-        bool xPassed = !CurrLevel.RequiresDistance || Ball.transform.position.x > CurrLevel.DistanceMeasurement;
+            yPassed = !CurrLevel.RequiresHeight || Ball.transform.position.y > CurrLevel.HeightMeasurement;
+        }
 
-        bool yPassed = !CurrLevel.RequiresHeight || Ball.transform.position.y > CurrLevel.HeightMeasurement;
+        if (Ball.transform.position.y > flyingHeight)
+        {
+            flyingHeight = Ball.transform.position.y;
+        }
 
         if (xPassed && yPassed)
         {
@@ -294,7 +313,10 @@ public class GameController : MonoBehaviour
 
     public void SkipLevel()
     {
-        state = GameStates.IdlePhase;
+        state = GameStates.EndingPhase;
+
+        PowerBar.powerBarGlow.gameObject.SetActive(false);
+        PowerBar.gameObject.SetActive(false);
 
         levelCounter++;
 
@@ -327,18 +349,25 @@ public class GameController : MonoBehaviour
                 Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
                 timeRemaining = TAP_TIME;
                 state = GameStates.PowerPhase;
+                PowerBar.powerBarGlow.gameObject.SetActive(true);
+                PowerBar.powerBarGlow.color = Color.clear;
                 break;
             case GameStates.PowerPhase:
                 ArrowImage.gameObject.SetActive(true);
+                PowerBar.powerBarGlow.gameObject.SetActive(false);
+
+
                 PowerBar.gameObject.SetActive(false);
                 timerOrDistance.text = "Swipe to launch!";
 
+                flyingHeight = 0;
 
                 state = GameStates.SwipePhase;
                 break;
             case GameStates.SwipePhase:
                 timerOrDistance.gameObject.SetActive(false);
                 flying = false;
+
                 ArrowImage.gameObject.SetActive(false);
 
                 Ball.GetComponent<Renderer>().material.SetFloat("Power", 0);
@@ -346,7 +375,7 @@ public class GameController : MonoBehaviour
                 break;
             case GameStates.FlyingPhase:
                 timerOrDistance.gameObject.SetActive(true);
-                timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2") + '\n' + "Height traveled: " + Ball.rb.position.y.ToString("F2");
+                timerOrDistance.text = "Distance traveled: " + Ball.rb.position.x.ToString("F2") + '\n' + "Height traveled: " + flyingHeight.ToString("F2");
 
                 levelGoalText.gameObject.SetActive(true);
 
@@ -364,6 +393,8 @@ public class GameController : MonoBehaviour
                 state = GameStates.EndingPhase;
                 break;
             case GameStates.EndingPhase:
+                WonLevel = false;
+                FailedLevel = false;
                 state = GameStates.IdlePhase;
                 break;
             default:

@@ -5708,9 +5708,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerBarMask: {fileID: 508621635}
   powerBarGlow: {fileID: 426925227}
-  barChangeSpeed: 1
+  barChangeSpeed: 2
   GlowSpeed: 15
   finalPower: 0
+  BadSound: {fileID: 8300000, guid: 34f83316928e1204c909384d3b1f64e9, type: 3}
   GoodSound: {fileID: 8300000, guid: 1d695d68d7721f94bbbc5aeb885cccff, type: 3}
   GreatSound: {fileID: 8300000, guid: cf91e322ae46b0e498750d8ef8d1e0b1, type: 3}
 --- !u!82 &404161725
@@ -5995,8 +5996,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000012159, y: -0.000078201}
-  m_SizeDelta: {x: 47.849976, y: 311.03992}
+  m_AnchoredPosition: {x: 0.000012159, y: -0.000017166}
+  m_SizeDelta: {x: 47.849976, y: 311.04004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508621634
 MonoBehaviour:
@@ -7241,6 +7242,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 822aa8b6c909eb74b8157933c5705120, type: 2}
   - {fileID: 11400000, guid: 2b461d55eacbea84387f2be692b197ee, type: 2}
   - {fileID: 11400000, guid: 2277330692e43ab4b9a8fb9dba1dd1b1, type: 2}
+  - {fileID: 11400000, guid: b4e97db9eb3b1dd409def2c0d27129cd, type: 2}
+  - {fileID: 11400000, guid: 34d64ae1baa1bd7418e8bb35e38841e4, type: 2}
+  - {fileID: 11400000, guid: 952bc9f124128e7409145f5bdcf42bee, type: 2}
   CurrLevel: {fileID: 11400000, guid: bdf9027335d12184984dda925a9e893b, type: 2}
   tempCounter: 0
   levelCounter: 0
@@ -7249,10 +7253,11 @@ MonoBehaviour:
   ArrowImage: {fileID: 423335956}
   detectSwipeOnlyAfterRelease: 0
   waitForSwipe: 1
-  SWIPE_THRESHOLD: 30
+  SWIPE_THRESHOLD: 20
   TAP_TIME: 5
   timeRemaining: 10
   WonLevel: 0
+  FailedLevel: 0
   gameStarted: 0
   flying: 0
   state: 0
@@ -8431,8 +8436,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -0.0015869141}
-  m_SizeDelta: {x: 0, y: 0.0034179688}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1935572459
 MonoBehaviour:

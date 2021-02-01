@@ -10,7 +10,7 @@ public class PowerBarScript : MonoBehaviour
     public float barChangeSpeed = 1f;
     public float GlowSpeed;
     float maxPowerBarValue = 100;
-    float maxPowerBarSpeed = 15;
+    float maxPowerBarSpeed = 10;
     float barThreashold = 92.5f;
 
     float goodTheashold = 50, greatThreashold = 80;
@@ -20,6 +20,7 @@ public class PowerBarScript : MonoBehaviour
     bool powerBarOn;
     float growth=1.25f;
     public float finalPower = 0;
+    public AudioClip BadSound;
     public AudioClip GoodSound;
     public AudioClip GreatSound;
     private AudioSource sound;
@@ -29,7 +30,7 @@ public class PowerBarScript : MonoBehaviour
         sound = GetComponent<AudioSource>();
         sound.pitch = 1f;
         finalPower = 0;
-        barChangeSpeed = 3.5f;
+        barChangeSpeed = 1.5f;
         currentPowerBarValue = 0;
         powerIsIncreasing = true;
         powerBarOn = true;
@@ -85,6 +86,7 @@ public class PowerBarScript : MonoBehaviour
         if (currentPowerBarValue < goodTheashold)
         {
             StartCoroutine(startBarGlow(Color.red));
+            sound.PlayOneShot(BadSound);
         }
         else if (currentPowerBarValue < greatThreashold)
         {

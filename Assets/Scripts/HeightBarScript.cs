@@ -34,9 +34,10 @@ public class HeightBarScript : MonoBehaviour
     {
         MarkScript MarkHolder = Instantiate(scaleMarks[markIndex], new Vector3( Screen.width / 15, transform.position.z + yspawn, 0), transform.rotation, canvas.transform);
         activeMarks.Add(MarkHolder);
-        activeMarks[activeMarks.Count - 1].currentAmount = firstmark + ((activeMarks.Count - 1) * units);
+        activeMarks[activeMarks.Count - 1].currentAmount = ((activeMarks.Count - 1) * units);
         activeMarks[activeMarks.Count - 1].SetMark();
         yspawn += Screen.height / (numOfMarks + 2);
+
     }
     private void moveMarks()
     {
